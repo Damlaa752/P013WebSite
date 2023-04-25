@@ -16,7 +16,7 @@ namespace P013WebSite.Entities
         public string? Phone { get; set; }
         [Display(Name = "Mesajınız :")]
         public string Message { get; set; }
-        [Display(Name = "Eklenme Tarihi :")]
+        [Display(Name = "Eklenme Tarihi :"), ScaffoldColumn(false)] // diğer sayfalarda gelmesin diye scaff yaptık
         public DateTime? CreateDate { get; set; } = DateTime.Now;
     }
 }
