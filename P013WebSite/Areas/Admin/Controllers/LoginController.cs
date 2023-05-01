@@ -26,18 +26,18 @@ namespace P013WebSite.Areas.Admin.Controllers
         {
             try
             {
-                var kullanici = await _context.Users.FirstOrDefaultAsync(u=> u.Email== email && u.Password== password && u.IsActive);
-                if (kullanici==null)
+                var kullanici = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password && u.IsActive);
+                if (kullanici == null)
                 {
-                    TempData["Mesaj"] = "Giriş Başarısız.!";
+                    TempData["Mesaj"] = "<div class='alert alert-danger' >Giriş Başarısız!</div>";
                 }
                 else
                 {
                     var haklar = new List<Claim>() // claim = hak
                     {
-                        new Claim(ClaimTypes.Email,kullanici.Email)//giriş için hak tanındı.
+                        new Claim(ClaimTypes.Email, kullanici.Email) // giriş için hak tnaımladık
                     };
-                    var kullaniciKimligi = new ClaimsIdentity(haklar,"Login");
+                    var kullaniciKimligi = new ClaimsIdentity(haklar, "Login"); // kullanıcıya kimlik tanımladık
                     ClaimsPrincipal claimsPrincipal = new(kullaniciKimligi);
                     await HttpContext.SignInAsync(claimsPrincipal);
                     if (kullanici.IsAdmin)
@@ -52,15 +52,19 @@ namespace P013WebSite.Areas.Admin.Controllers
             }
             catch (Exception)
             {
+
                 TempData["Mesaj"] = "Hata Oluştu!";
             }
             return View();
         }
-        [Route("Logout")] // adres çubuğundan yaptığımız yönlendirmede login/logout yerine sadece logouta gidince çıkış yapsın.
-        public async Task<IActionResult> LogoutAsync()
+
+        [Route("Logout")]// adres çubuğpundan yaptığımız yönlendirede login/logout yerine sadece logout a gidince çıkış yapsın
+        public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
             return Redirect("/Admin/Login");
         }
+
     }
 }
+
